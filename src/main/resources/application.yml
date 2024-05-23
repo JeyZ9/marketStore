@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: "market-store"
+  jpa:
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQLDialect"
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:mysql://localhost:3306/marketstore"
+    username: "root"
+    password: "root"
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+BASE_URL: "http://localhost:8080/"
+STRIPE_SECRET_KEY: "YOUR_SECRET_KEY"
