@@ -11,6 +11,8 @@ import com.app.marketstore.service.AuthenticationService;
 import com.app.marketstore.service.OrderService;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
+@Tag(name = "order", description = "The order controller")
 public class OrderController {
 
     private final OrderService orderService;
@@ -32,6 +35,7 @@ public class OrderController {
         this.authenticationService = authenticationService;
     }
 
+    @Operation(summary = "Create checkout session", description = "Create a new checkout session for payment")
     @PostMapping("/create-checkout-session")
     public ResponseEntity<StripeResponse> checkoutList(@RequestBody List<CheckoutItemDTO> checkoutItemDTOList) throws StripeException{
 
@@ -42,6 +46,7 @@ public class OrderController {
         return new ResponseEntity<>(stripeResponse, HttpStatus.OK);
     }
 
+    @Operation(summary = "place order", description = "Add a new place order")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> placeOrder(@RequestParam("token") String token, @RequestParam("sessionId") String sessionId) throws AuthenticationFailException{
         authenticationService.authenticate(token);
@@ -53,6 +58,7 @@ public class OrderController {
         return new ResponseEntity<>(new ApiResponse(true, "Order placed successfully!"), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get All Order", description = "Get all order of a user from token")
     @GetMapping("/")
     public ResponseEntity<List<Order>> getAllOrder(@RequestParam("token") String token) throws AuthenticationFailException{
         authenticationService.authenticate(token);
@@ -64,6 +70,7 @@ public class OrderController {
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get the order by id", description = "Get the order by id from token")
     @GetMapping("/{orderId}")
     public ResponseEntity<Object> getOrderById(@PathVariable("orderId") Long id, @RequestParam("token") String token) throws AuthenticationFailException, OrderNotFoundException {
 

@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+//ระบุว่าคลาสนี้เป็นคลาสที่ให้คำแนะนำแก่คอนโทรลเลอร์ (Controller) ในแอปพลิเคชัน
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+//    ระบุเมธอดที่ใช้จัดการกับข้อยกเว้นที่ระบุในพารามิเตอร์ของ @ExceptionHandler แต่ละตัว
     @ExceptionHandler(value = CustomException.class)
     public final ResponseEntity<String> handleUpdateFailException(CustomException customException){
         return new ResponseEntity<>(customException.getMessage(), HttpStatus.BAD_REQUEST);

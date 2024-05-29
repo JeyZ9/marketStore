@@ -9,6 +9,8 @@ import com.app.marketstore.model.WishList;
 import com.app.marketstore.repository.ProductRepository;
 import com.app.marketstore.service.AuthenticationService;
 import com.app.marketstore.service.WishListService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/wishlist")
+@Tag(name = "wishlist", description = "The wish list controller")
 public class WishListController {
 
     private final WishListService wishListService;
@@ -32,6 +35,7 @@ public class WishListController {
         this.productRepository = productRepository;
     }
 
+    @Operation(summary = "Add a wish list", description = "Add a product to the wish list")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addWishList(@RequestBody ProductDTO productDTO, @RequestParam("token") String token) throws AuthenticationFailException {
         authenticationService.authenticate(token);
@@ -47,6 +51,7 @@ public class WishListController {
         return new ResponseEntity<>(new ApiResponse(true, "Added to wish list"), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get a wish list", description = "Get a product in wish list by token")
     @GetMapping("/{token}")
     public ResponseEntity<List<ProductDTO>> getWishList(@PathVariable("token") String token) throws AuthenticationFailException{
         authenticationService.authenticate(token);

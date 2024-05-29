@@ -11,6 +11,8 @@ import com.app.marketstore.model.User;
 import com.app.marketstore.service.AuthenticationService;
 import com.app.marketstore.service.CartService;
 import com.app.marketstore.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
+@Tag(name = "cart", description = "The cart controller")
 public class CartController {
 
     private final CartService cartService;
@@ -33,6 +36,7 @@ public class CartController {
         this.productService = productService;
     }
 
+    @Operation(summary = "Add product to cart", description = "add product to")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDTO addToCartDTO, @RequestParam("token") String token) throws ProductNotExistException, AuthenticationFailException{
         authenticationService.authenticate(token);
@@ -46,6 +50,7 @@ public class CartController {
         return new ResponseEntity<>(new ApiResponse(true, "Added to cart successfully!"), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Get all product", description = "Get all products from cart")
     @GetMapping("/")
     public ResponseEntity<CartDTO> getCartItems(@RequestParam("token") String token) throws AuthenticationFailException{
         authenticationService.authenticate(token);
@@ -57,6 +62,7 @@ public class CartController {
         return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }
 
+    @Operation(summary = "Delete cart item", description = "Delete all products from cart ID")
     @DeleteMapping("/delete/{cartItemId}")
     public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") Long cartItemId, @RequestParam("token") String token) throws AuthenticationFailException, CartItemNotExistException{
 
