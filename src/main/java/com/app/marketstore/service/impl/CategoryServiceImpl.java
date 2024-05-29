@@ -1,5 +1,6 @@
 package com.app.marketstore.service.impl;
 
+import com.app.marketstore.exceptions.CategoryNotFoundException;
 import com.app.marketstore.model.Category;
 import com.app.marketstore.repository.CategoryRepository;
 import com.app.marketstore.service.CategoryService;
@@ -40,8 +41,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public void updateCategory(Long categoryId, Category newCategory){
-        Category category = categoryRepository.findById(categoryId).get();
-        category.setCategoryName(newCategory.getCategoryName());
-        categoryRepository.save(category);
+        Optional<Category> optionCategory = categoryRepository.findById(categoryId);
+        if (optionCategory.isPresent()) {
+            Category category = optionCategory.get();
+            category.setCategoryName(newCategory.getCategoryName());
+            categoryRepository.save(category);
+        }else {
+            throw new CategoryNotFoundException("Category with id " + categoryId + " does not exist.");
+        }
     }
 }
