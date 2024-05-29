@@ -15,6 +15,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
+//                จะอนุญาตเฉพาะการเรียก API จาก https://example.com เท่านั้น
+//                .allowedOrigins("https://example.com")
                         .allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
             }
