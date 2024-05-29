@@ -8,6 +8,10 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -18,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
                 contact = @Contact(
                         name = "Jey",
                         email = "jey@gmail.com",
-                        url = "https://www.github.com/jey"
+                        url = "https://www.github.com/jeyZ9"
                 ),
                 version = "1.0",
                 license = @License(
@@ -44,4 +48,20 @@ import org.springframework.context.annotation.Configuration;
         in = SecuritySchemeIn.HEADER
 )
 public class SwaggerConfig {
+    @Bean
+    public OpenAPI customOpenAPI(){
+        return new OpenAPI()
+                .info(new io.swagger.v3.oas.models.info.Info())
+                .externalDocs(new ExternalDocumentation()
+                        .description("MarketStore GitHub Repository")
+                        .url("https://github.com/jeyZ9/marketStore"));
+    }
+
+    @Bean
+    public GroupedOpenApi publicApi(){
+        return GroupedOpenApi.builder()
+                .group("public")
+                .pathsToMatch("/**")
+                .build();
+    }
 }
